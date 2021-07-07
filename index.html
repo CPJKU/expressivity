@@ -1,0 +1,123 @@
+<html lang="en"><head>
+    <script src="p5.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="utf-8">
+
+  </head>
+  <body>
+    <div id="canvas_container">
+      <script src="sketch.js"></script>
+    </div>
+    
+  
+
+ <div id="text_container">
+
+
+   
+   <h2 class="titles" >Visualizing Musical Expression</h2>
+
+   <p> Welcome to this interactive visualization of two experiments in perceived 
+  musical expression that were performed in the context for the 
+  <a href="https://www.jku.at/en/institute-of-computational-perception/research/projects/con-espressione/">
+  <em>Con Espressione</em> project </a>!
+  </p>
+  
+  <p>In the 
+  <a href="http://con-espressione.cp.jku.at/">
+   first experiment </a>
+  listeners were asked to describe, in free text (preferable adjectives), the
+  perceived expressive character of different performances of several Baroque, 
+  Classical, and Romantic solo piano pieces.
+
+    In the second experiment, two groups of music experts were asked to sort the 
+    150 most common descriptors of the first experiment into "piles" of similar terms.
+  </p>
+
+   <p>This visualization reveals some of the results of these experiments.
+    In the right column you see the performances used in the first experiment.
+    In the center you see a two-dimensional representation of the 150 most important terms, created using Multidimensional Scaling.
+    In the left column you see two lists of piles as created and named by
+    the two groups of experts, representing two alternative ways of
+    structuring this space of musical characterizations.
+    There are three ways to interact with this visualization: <br>
+    <br>
+    (1) Click on a performance to see the terms used by listeners to describe this performance.
+    Every term is in turn connected to the two piles it was sorted into.<br>
+    (2) Click on a pile to see only the terms that were sorted into it.
+    Every term is in turn connected to all the performance it was used for.<br>
+    (3) Click on a term to see both piles it was sorted into as well as all performances it was used for.
+    All terms that were were sorted into the same two piles are connected too.
+  
+  </p>
+
+   <p>
+    For more details on the experiments and the creation and analysis of this data, please see the publications below.
+    The datasets (including many modalities not used in this visualization) are available for further research too.
+   </p>
+  
+   
+   
+
+
+   <h2 class="titles">Publications</h2>
+
+
+   <p> Cancino-Chacón, C., Peter, S., Chowdhury, S., Aljanaki, A., and Widmer, G.:<br>
+    <a href="https://doi.org/10.5281/zenodo.3968828">Sorting Musical Expression:  
+      Characterization of Descriptions of Expressive Piano Performances</a><br>
+    In Proceedings of the 16th International Conference on Music Perception and Cognition (ICMPC), 2021
+   </p>
+
+    <p>Cancino-Chacón, C., Peter, S., Chowdhury, S., Aljanaki, A., and Widmer, G.:<br>
+    <a href="https://arxiv.org/abs/2008.02194">On the Characterization of Expressive Performance 
+      in Classical Music: First Results of the Con Espressione Game </a><br>
+      In Proceedings of the 21st International Society for Music Information Retrieval Conference (ISMIR), 2020
+   </p>
+
+    <h2 class="titles">Data and Repositories</h2>
+
+   <p> The Con Espressione Game Dataset can be obtained here:<br>
+    <a href="https://doi.org/10.5281/zenodo.3968828">Con Espressione Dataset</a>
+   </p>
+ 
+   <p> The code for the ISMIR 2020 publication can be found here:<br>
+    <a href="">Github ISMIR 2020</a>
+   </p>
+
+   <p> The code for the ICMPC 2021 publication can be found here:<br>
+    <a href="">Github ICMPC 2021</a>
+   </p>
+
+
+
+
+    <h2 class="titles">Acknowledgments</h2> 
+
+
+
+
+
+  <p> This research has received support from the European Research Council (ERC) 
+  under the European Union’s Horizon 2020 research and innovation programme 
+  under grant agreement No. 670035 
+  (project <a href="https://www.jku.at/en/institute-of-computational-perception/research/projects/con-espressione/">"Con Espressione"</a>)
+   and by the Research Council of Norway through its Centers of Excellence scheme, 
+   project number 262762 and the 
+   <a href="https://www.uio.no/ritmo/english/projects/mirage/index.html">MIRAGE project</a>, 
+   grant number 287152.
+
+
+
+    </p>
+
+  <p>We gratefully acknowledge the effort invested by our music expert, Hans Georg Nicklaus (Anton Bruckner Private University of Music, Linz) for helping with the selection of the different performances in the dataset. 
+    We thank Olivier Lartillot for sharing the Matlab code to compute the loudness features.
+  </p>
+     <img src="data/LOGO_ERC-FLAG_EU NEGATIF.jpg" alt="ERC LOGO" style="width:400px;">
+
+
+ </div>
+
+</body></html>

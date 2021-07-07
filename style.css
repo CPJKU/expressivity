@@ -1,0 +1,29 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: black;
+  font-family: Helvetica Neue,Helvetica,Arial,sans-serif; 
+}
+canvas {
+  display: block;
+}
+#canvas_container {
+  position: absolute;
+  left: 50%;
+
+}
+
+.titles {
+  display: block ;
+}
+
+#text_container {
+  color: lightgrey;
+  position: absolute;
+  left: 50%;
+  width: 700px;
+  margin-left: -350px;
+  display: block;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
