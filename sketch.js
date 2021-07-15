@@ -14,15 +14,18 @@ let term_strings = [];
 let term_string = "";
 
 let default_settings;
+let sound;
 
 function preload() {
   term_table = loadTable("data/term_data1.csv", 'csv', 'header');
   perf_table = loadTable("data/perf_data1.csv", 'csv', 'header');
   pile_table = loadTable("data/pile_data1.csv", 'csv', 'header');
+  sound = loadSound('excerpts/asd.mp3');
 }
 
 function setup() {
-  default_settings = {
+
+  default_settings_dark = {
     perf_line:color(120,140),
     perf_background:color(200,50),
     //pile_line:color(183, 172, 68, 230),
@@ -43,40 +46,71 @@ function setup() {
     font_size: 10,
 
   };
-  default_settings.width = max(1450, windowWidth);
-  let max_height = default_settings.width - 900;
-  default_settings.height = min(max(800, windowHeight -20 ),max_height);
+
+  default_settings_light = {
+    perf_line:color(120,140),
+    perf_background:color(200,50),
+    //pile_line:color(183, 172, 68, 230),
+    //term_line: color(255,170,0,230),
+    background: color(255),
+    
+    group1_from:color(23, 244, 120, 100),
+    group1_to:color(23, 23, 244, 100),
+    group2_from:color(218, 0, 32, 150),
+    group2_to:color(72, 218, 9, 150),
+
+    text_normal:color(220,160),
+    text_normal_p:color(210,235),
+    text_highlight:color(220,255),
+  
+    height:800,
+    width:1500,
+    font_size: 10,
+
+  };
+
+  default_settings = default_settings_dark;
+  let initial_width = max(1520, windowWidth-40);
+  let max_height = initial_width - 920;
+  default_settings.height = min(max(800, windowHeight ),max_height);
+  default_settings.width = default_settings.height+920
   default_settings.font_size = default_settings.height /45 /5 *3;
 
   textFont('Helvetica');
   
   //select('#text_container').style("left", ((default_settings.height+900)/2).toString()+"px");
-  select('#text_container').style("top", (default_settings.height+50).toString()+"px");
-  if ((default_settings.height+900)/2 > 1450/2) {
-    select('#canvas_container').style("margin-left", "-"+((default_settings.height+900)/2-10).toString()+"px");
+  select('#text_container').style("top", (default_settings.height+20+50).toString()+"px");
+  
+  if (initial_width == (windowWidth-40)) {  //(default_settings.height+900+20)/2 > 1500/2
+    select('#canvas_container').style("width", ((default_settings.width)).toString()+"px");
+    select('#canvas_container').style("margin-left", "-"+((default_settings.width)/2).toString()+"px");
+
   } else {
+    select('#canvas_container').style("width", (default_settings.width).toString()+"px");
     select('#canvas_container').style("margin-left", "-"+(windowWidth/2-10).toString()+"px");
+
   }
   
 
-  let canvas = createCanvas(default_settings.width, default_settings.height );
+  let canvas = createCanvas(default_settings.width, default_settings.height +20 );
   canvas.parent("canvas_container")
   canvas.mousePressed(checkclick);
   create_objects();
   noLoop();
   noStroke();
+  
 }
 
 function draw() {
   background(default_settings.background);
-
+  translate(10,10);
   push();
   stroke(default_settings.perf_line)
   strokeWeight(2)
-  line(1,1,1, default_settings.height-1);
-  line(default_settings.height-1+900,1,default_settings.height-1+900, default_settings.height-1);
-  line(1,1,default_settings.height-1+900, 1);
-  line(1, default_settings.height-1,default_settings.height-1+900, default_settings.height-1);
+  line(-1,-1,-1, default_settings.height+1);
+  line(default_settings.height+1+900,-1,default_settings.height+1+900, default_settings.height+1);
+  line(-1,-1,default_settings.height+1+900, -1);
+  line(-1, default_settings.height+1,default_settings.height+1+900, default_settings.height+1);
   pop();
 
   push();
@@ -116,12 +150,10 @@ function draw() {
     text("Currently highlighted terms:", 230, default_settings.height/2-(term_strings.length/2-1)*12-15*2);
   }
   text(term_string, 230, default_settings.height/2-(term_strings.length/2-1)*12-15);
-  console.log(-(term_strings.length/2)*12)
+ 
   textSize(10);
   for (var key in term_strings) {
     text(term_strings[key], 230, default_settings.height/2-(term_strings.length/2-1)*12+key*12);
-      
-      console.log(-(term_strings.length/2 - 1)*12+key*12);
     }
   
   pop();
@@ -212,7 +244,7 @@ function create_perf_lines_from_perf(term_idx, perf_id){
 }
 
 function create_term_lines_from_term(term_id_orig, term_idx, col){
-  console.log("create term lines", term_id_orig, term_idx);
+  //console.log("create term lines", term_id_orig, term_idx);
   term_lines= term_lines.concat(term_idx.map((term_id)=>{ term_objects[term_id].clicked = true;
     return new Connection(term_objects[term_id_orig].x,
                           term_objects[term_id_orig].y,
@@ -253,7 +285,7 @@ class Connection {
 class Term {
   constructor(x,y,name, id, id_pile1, id_pile2, name_pile1, name_pile2, neighbors1, neighbors2, performances) {
     this.x = x*default_settings.height/2 + default_settings.height/2 + 400;
-    this.y = y*default_settings.height/2 +default_settings.height/2;
+    this.y = y*default_settings.height/2 + default_settings.height/2;
     this.name = name.split("_").join(" ");
     this.id = id;
     this.id_pile1 = id_pile1;
@@ -330,7 +362,7 @@ class Term {
     }
   }
   click() {
-    console.log("clicked term", this.name)
+    //console.log("clicked term", this.name)
     create_perf_lines_from_term(this.id, this.perf_idx);
     create_pile_lines_from_term(this.ids_pile, this.id);
     create_term_lines_from_term(this.id, this.neighbors1, pile_objects[this.id_pile1].color);
@@ -384,7 +416,6 @@ class Pile {
       return lerpColor(default_settings.group2_from, default_settings.group2_to, this.within_group_id/18)
     }
     else if (this.group == 1) {
-
       colorMode(RGB); // Try changing to HSB.
       return lerpColor(default_settings.group1_from, default_settings.group1_to, this.within_group_id/24)
     }
@@ -399,7 +430,7 @@ class Pile {
     let text_color = default_settings.text_normal_p;
     if (this.clicked) {
       x_extra = 10;
-      bcolor = color(...this.color.levels.slice(0,3), 225);
+      bcolor = color(...this.color.levels.slice(0,3), 255);
       font_size = default_settings.font_size + 2;;
       text_color = default_settings.text_highlight;
     }
@@ -420,7 +451,7 @@ class Pile {
   tryclick() {
     this.clicked = false;
     if(mouseX>=this.x && mouseX<this.x+this.xl && mouseY>=this.y && mouseY<this.y+this.yl){
-     console.log("clicked pile", this.name);
+     //console.log("clicked pile", this.name);
      clicked_objects.push(this);
      this.clicked = true;
     }
@@ -463,6 +494,7 @@ class Performance {
     this.clicked = false;
     
     
+    
 
   }
 
@@ -480,9 +512,7 @@ class Performance {
     }
     let namesplit = name.split("_");
     namesplit = namesplit.map((word)=>{return word.charAt(0).toUpperCase()+word.slice(1,word.length);})
-    console.log(namesplit);
     namesplit = namesplit.filter(word=>word.indexOf("Schumann") < 0 );
-    console.log(namesplit);
     namesplit = namesplit.map((word)=>{
       if (replace_strings.hasOwnProperty(word)) {
         return replace_strings[word]
@@ -526,12 +556,21 @@ class Performance {
     text(this.name, this.x+50, this.y+0.8*this.yl);
     pop();
   }
+  play_excerpt() {
+    if (sound.isPlaying()) {
+      sound.stop();
+    } else {
+      sound.play();
+    }
+  }
+
   tryclick() {
     this.clicked = false;
     if(mouseX>=this.x && mouseX<this.x+this.xl && mouseY>=this.y && mouseY<this.y+this.yl){
-     console.log("clicked performance", this.name);
+     //console.log("clicked performance", this.name);
      clicked_objects.push(this);
      this.clicked = true;
+     this.play_excerpt();
     }
   }
   click() {
