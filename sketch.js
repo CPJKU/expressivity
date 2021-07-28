@@ -14,13 +14,69 @@ let term_strings = [];
 let term_string = "";
 
 let default_settings;
-let sound;
+
+
+let sounds = {};
+let sound_paths = {
+bach_Gieseking: "excerpts/bach_Gieseking.mp3",
+bach_Gould: "excerpts/bach_Gould.mp3",
+bach_Grimaud: "excerpts/bach_Grimaud.mp3",
+bach_Kempff: "excerpts/bach_Kempff.mp3",
+bach_MIDI: "excerpts/bach_MIDI.mp3",
+bach_Richter: "excerpts/bach_Richter.mp3",
+bach_Stadtfeld: "excerpts/bach_Stadtfeld.mp3",
+beethoven_Casadesus: "excerpts/beethoven_Casadesus.mp3",
+beethoven_Gulda: "excerpts/beethoven_Gulda.mp3",
+beethoven_Lazic: "excerpts/beethoven_Lazic.mp3",
+beethoven_Lim: "excerpts/beethoven_Lim.mp3",
+beethoven_Schiff: "excerpts/beethoven_Schiff.mp3",
+beethoven_Schirmer: "excerpts/beethoven_Schirmer.mp3",
+brahms_Angelich: "excerpts/brahms_Angelich.mp3",
+brahms_Ax: "excerpts/brahms_Ax.mp3",
+brahms_Kempff: "excerpts/brahms_Kempff.mp3",
+brahms_Serkin: "excerpts/brahms_Serkin.mp3",
+brahms_Vogt: "excerpts/brahms_Vogt.mp3",
+liszt_Bavouzet: "excerpts/liszt_Bavouzet.mp3",
+liszt_Brendel: "excerpts/liszt_Brendel.mp3",
+liszt_Gardon: "excerpts/liszt_Gardon.mp3",
+liszt_Katsaris: "excerpts/liszt_Katsaris.mp3",
+mozart_Gould: "excerpts/mozart_Gould.mp3",
+mozart_Gulda: "excerpts/mozart_Gulda.mp3",
+mozart_MIDI: "excerpts/mozart_MIDI.mp3",
+mozart_Pires: "excerpts/mozart_Pires.mp3",
+mozart_Uchida: "excerpts/mozart_Uchida.mp3",
+schumann_arabeske_excerpt1_Horowitz: "excerpts/schumann_arabeske_excerpt1_Horowitz.mp3",
+schumann_arabeske_excerpt1_Rubinstein: "excerpts/schumann_arabeske_excerpt1_Rubinstein.mp3",
+schumann_arabeske_excerpt1_Schiff: "excerpts/schumann_arabeske_excerpt1_Schiff.mp3",
+schumann_arabeske_excerpt1_Vorraber: "excerpts/schumann_arabeske_excerpt1_Vorraber.mp3",
+schumann_arabeske_excerpt2_Horowitz: "excerpts/schumann_arabeske_excerpt2_Horowitz.mp3",
+schumann_arabeske_excerpt2_Rubinstein: "excerpts/schumann_arabeske_excerpt2_Rubinstein.mp3",
+schumann_arabeske_excerpt2_Schiff: "excerpts/schumann_arabeske_excerpt2_Schiff.mp3",
+schumann_arabeske_excerpt2_Vorraber: "excerpts/schumann_arabeske_excerpt2_Vorraber.mp3",
+schumann_kreisleriana_excerpt1_Argerich: "excerpts/schumann_kreisleriana_excerpt1_Argerich.mp3",
+schumann_kreisleriana_excerpt1_Brendel: "excerpts/schumann_kreisleriana_excerpt1_Brendel.mp3",
+schumann_kreisleriana_excerpt1_Horowitz: "excerpts/schumann_kreisleriana_excerpt1_Horowitz.mp3",
+schumann_kreisleriana_excerpt1_Vogt: "excerpts/schumann_kreisleriana_excerpt1_Vogt.mp3",
+schumann_kreisleriana_excerpt1_Vorraber: "excerpts/schumann_kreisleriana_excerpt1_Vorraber.mp3",
+schumann_kreisleriana_excerpt2_Argerich: "excerpts/schumann_kreisleriana_excerpt2_Argerich.mp3",
+schumann_kreisleriana_excerpt2_Brendel: "excerpts/schumann_kreisleriana_excerpt2_Brendel.mp3",
+schumann_kreisleriana_excerpt2_Horowitz: "excerpts/schumann_kreisleriana_excerpt2_Horowitz.mp3",
+schumann_kreisleriana_excerpt2_Vogt: "excerpts/schumann_kreisleriana_excerpt2_Vogt.mp3",
+schumann_kreisleriana_excerpt2_Vorraber: "excerpts/schumann_kreisleriana_excerpt2_Vorraber.mp3"
+}
+
+
 
 function preload() {
   term_table = loadTable("data/term_data1.csv", 'csv', 'header');
   perf_table = loadTable("data/perf_data1.csv", 'csv', 'header');
   pile_table = loadTable("data/pile_data1.csv", 'csv', 'header');
-  sound = loadSound('excerpts/asd.mp3');
+  for (path_name in sound_paths) {
+    console.log(sound_paths[path_name]);
+    let local_sound = loadSound(sound_paths[path_name]);
+    sounds[path_name] = local_sound;
+  }
+
 }
 
 function setup() {
@@ -46,6 +102,8 @@ function setup() {
     font_size: 10,
 
   };
+
+
 
   default_settings_light = {
     perf_line:color(120,140),
@@ -354,7 +412,7 @@ class Term {
 
   tryclick() {
     this.clicked = false;
-    if(Math.sqrt((mouseX-this.x)**2 + (mouseY-this.y)**2)<= 10){
+    if(Math.sqrt((mouseX-(this.x+10))**2 + (mouseY-(this.y+10))**2)<= 10){
   
      clicked_objects.push(this);
      this.clicked = true;
@@ -450,7 +508,7 @@ class Pile {
 
   tryclick() {
     this.clicked = false;
-    if(mouseX>=this.x && mouseX<this.x+this.xl && mouseY>=this.y && mouseY<this.y+this.yl){
+    if(mouseX>=this.x+10 && mouseX<this.x+this.xl+10 && mouseY>=this.y+10 && mouseY<this.y+this.yl+10){
      //console.log("clicked pile", this.name);
      clicked_objects.push(this);
      this.clicked = true;
@@ -479,6 +537,10 @@ class Performance {
     //let namesplit = name.split("_");
     //namesplit = namesplit.map((word)=>{return word.charAt(0).toUpperCase()+word.slice(1,word.length);})
     this.name = this.format_name(name)// namesplit.join(" ");
+    this.original_name = name;
+    this.sound = sounds[this.original_name];
+    //sound_paths[name] = "excerpts/"+name+".mp3"
+    //console.log(name)
     this.music_id = music_id;
     this.within_id = within_id;
     this.term_idx = term_idx;
@@ -557,16 +619,16 @@ class Performance {
     pop();
   }
   play_excerpt() {
-    if (sound.isPlaying()) {
-      sound.stop();
+    if (this.sound.isPlaying()) {
+      this.sound.stop();
     } else {
-      sound.play();
+      this.sound.play();
     }
   }
 
   tryclick() {
     this.clicked = false;
-    if(mouseX>=this.x && mouseX<this.x+this.xl && mouseY>=this.y && mouseY<this.y+this.yl){
+    if(mouseX>=this.x+10 && mouseX<this.x+this.xl+10 && mouseY>=this.y+10 && mouseY<this.y+this.yl+10){
      //console.log("clicked performance", this.name);
      clicked_objects.push(this);
      this.clicked = true;
