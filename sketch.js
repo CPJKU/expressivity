@@ -16,7 +16,9 @@ let term_string = "";
 let default_settings;
 
 
-let sounds = {};
+let sounds = {
+  playing: false
+};
 let sound_paths = {
 bach_Gieseking: "excerpts/bach_Gieseking.mp3",
 bach_Gould: "excerpts/bach_Gould.mp3",
@@ -619,11 +621,39 @@ class Performance {
     pop();
   }
   play_excerpt() {
-    if (this.sound.isPlaying()) {
+    if (sounds.playing) {
+      if (sounds[sounds.playing].isPlaying()) {
+        sounds[sounds.playing].amp(0,0.005);
+        sounds[sounds.playing].stop();
+
+
+        if (sounds.playing == this.original_name) {
+          sounds.playing = false;
+        }
+        else {
+          sounds[this.original_name].amp(1,0.05);
+          sounds[this.original_name].play();
+          sounds.playing = this.original_name;
+        }
+        
+      }
+      else {
+        sounds[this.original_name].amp(1,0.05);
+        sounds[this.original_name].play();
+        sounds.playing = this.original_name;
+      } 
+
+      
+    } else {
+      sounds[this.original_name].amp(1,0.05);
+      sounds[this.original_name].play();
+      sounds.playing = this.original_name;
+    }
+    /*if (this.sound.isPlaying()) {
       this.sound.stop();
     } else {
       this.sound.play();
-    }
+    }*/
   }
 
   tryclick() {
