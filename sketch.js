@@ -95,9 +95,9 @@ function setup() {
     group2_from:color(218, 0, 32, 150),
     group2_to:color(72, 218, 9, 150),
 
-    text_normal:color(220,160),
-    text_normal_p:color(210,235),
-    text_highlight:color(220,255),
+    text_normal:color(240,160),
+    text_normal_p:color(240,235),
+    text_highlight:color(240,255),
   
     height:800,
     width:1500,

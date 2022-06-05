@@ -17,7 +17,7 @@ canvas {
 }
 
 #text_container {
-  color: lightgrey;
+  color: rgb(240, 240, 240);
   position: absolute;
   left: 50%;
   width: 700px;
@@ -25,4 +25,14 @@ canvas {
   display: block;
   flex-wrap: wrap;
   flex-direction: row;
+}
+a:link {
+  color: rgb(165, 208, 253);
+  background-color: transparent;
+  text-decoration: none;
+}
+a:visited {
+  color: rgb(114, 182, 255);
+  background-color: transparent;
+  text-decoration: none;
 }
